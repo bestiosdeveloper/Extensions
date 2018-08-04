@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 //MARK:- UITableView Extension
 extension UITableView {
     

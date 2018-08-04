@@ -21,28 +21,28 @@ extension DispatchQueue{
     }
     
     ///Returns the main queue asynchronuously
-    class func mainQueueAsync(_ closure:@escaping ()->()){
+    class func mainAsync(_ closure:@escaping ()->()){
         self.main.async(execute: {
             closure()
         })
     }
     
     ///Returns the main queue synchronuously
-    class func mainQueueSync(_ closure:@escaping ()->()){
+    class func mainSync(_ closure:@escaping ()->()){
         self.main.sync(execute: {
             closure()
         })
     }
     
     ///Returns the background queue asynchronuously
-    class func backgroundQueueAsync(_ closure:@escaping ()->()){
+    class func backgroundAsync(_ closure:@escaping ()->()){
         self.global().async(execute: {
             closure()
         })
     }
     
     ///Returns the background queue synchronuously
-    class func backgroundQueueSync(_ closure:@escaping ()->()){
+    class func backgroundSync(_ closure:@escaping ()->()){
         self.global().sync(execute: {
             closure()
         })

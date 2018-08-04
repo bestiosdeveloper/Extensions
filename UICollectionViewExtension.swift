@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+
 //MARK:- UICollectionView Extension
 extension UICollectionView {
     
@@ -80,7 +82,7 @@ extension UICollectionView {
     func enablePullToRefresh(target: UIViewController, selector: Selector, tintColor: UIColor? = nil){
         
         let refreshControl = UIRefreshControl()
-        refreshControl.backgroundColor = AppColor.appBlack
+        refreshControl.backgroundColor = AppColor.black
         refreshControl.addTarget(target, action: selector, for: UIControlEvents.valueChanged)
         if let tColor = tintColor{
             refreshControl.tintColor = tColor

@@ -33,6 +33,14 @@ extension UnicodeScalar {
 //MARK:- glyphCount
 extension String {
     
+    var encodeUrl: String {
+        return self.addingPercentEncoding( withAllowedCharacters: NSCharacterSet.urlQueryAllowed) ?? self
+    }
+    
+    var decodeUrl: String {
+        return self.removingPercentEncoding ?? self
+    }
+    
     var utf8Decoded: String {
         
 //        let jsonString = (self as NSString).utf8String
@@ -83,28 +91,28 @@ extension String {
     }
     
     var firstCharacter: Character {
-        if self.length <= 0 {
+        if self.count <= 0 {
             return Character(" ")
         }
         return self[self.index(self.startIndex, offsetBy: 0)]
     }
     
     var lastCharacter: Character {
-        if self.length <= 0 {
+        if self.count <= 0 {
             return Character(" ")
         }
         return self[self.index(self.endIndex, offsetBy: -1)]
     }
     
     var firstWord: String {
-        if self.length <= 0 {
+        if self.count <= 0 {
             return ""
         }
         return String(self.split(separator: " ").first ?? Substring(""))
     }
     
     var lastWord: String {
-        if self.length <= 0 {
+        if self.count <= 0 {
             return ""
         }
         return String(self.split(separator: " ").last ?? Substring(""))
@@ -179,14 +187,14 @@ extension String {
             return NSMutableAttributedString(string: self)
         }
         
-        let subTxt1 = self.substring(to: self.length-2)
+        let subTxt1 = self.substring(to: self.count-2)
         let subTxt2 = "*"
         
         let attributedStr1 = NSMutableAttributedString(string: subTxt1)
-        attributedStr1.addAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: textColor], range: NSRange(location: 0, length: subTxt1.length))
+        attributedStr1.addAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: textColor], range: NSRange(location: 0, length: subTxt1.count))
         
         let attributedStr2 = NSMutableAttributedString(string: subTxt2)
-        attributedStr2.addAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: asteriskColor], range: NSRange(location: 0, length: subTxt2.length))
+        attributedStr2.addAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: asteriskColor], range: NSRange(location: 0, length: subTxt2.count))
         attributedStr1.append(attributedStr2)
         return attributedStr1
     }
@@ -211,10 +219,6 @@ extension String {
         return chars
     }
     
-    /// MARK:- Character count
-    public var length: Int {
-        return self.count
-    }
 
     var isEmail: Bool{
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
@@ -383,6 +387,15 @@ extension String {
         return ""
     }
     
+    var htmlToAttributedString: NSAttributedString{
+        guard let data = data(using: .utf8) else { return NSAttributedString() }
+        do{
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
+        }catch{
+            return NSAttributedString()
+        }
+    }
+    
     func contains(_ find: String) -> Bool{
         return self.range(of: find) != nil
     }
@@ -393,7 +406,7 @@ extension String {
     
     func substring(from: Int?, to: Int?) -> String {
         if let start = from {
-            guard start < self.length else {
+            guard start < self.count else {
                 return ""
             }
         }
@@ -418,7 +431,7 @@ extension String {
         }
         
         let endIndex: String.Index
-        if let end = to, end >= 0, end < self.length {
+        if let end = to, end >= 0, end < self.count {
             endIndex = self.index(self.startIndex, offsetBy: end + 1)
         } else {
             endIndex = self.endIndex

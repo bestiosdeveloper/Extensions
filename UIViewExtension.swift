@@ -224,4 +224,9 @@ extension UIView {
         shapeLayer.path = path
         self.layer.addSublayer(shapeLayer)
     }
+    
+    func rotate(rotationAngle: CGFloat) {
+        self.transform = CGAffineTransform(rotationAngle: rotationAngle)
+        self.clipsToBounds = true
+    }
 }

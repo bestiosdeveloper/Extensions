@@ -15,7 +15,12 @@ extension UIApplication {
     ///Opens Settings app
     @nonobjc class var openSettingsApp:Void{
         
-        self.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+        if #available(iOS 10.0, *) {
+            self.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+        } else {
+            // Fallback on earlier versions
+            self.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        }
     }
     
     ///Disables the ideal timer of the application

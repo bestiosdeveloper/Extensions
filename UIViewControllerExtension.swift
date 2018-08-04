@@ -13,13 +13,6 @@ import AVFoundation
 import Photos
 import PhotosUI
 
-extension UIViewController {
-    func hideNavigationItem(isHidden: Bool){
-        self.navigationController?.isNavigationBarHidden = isHidden
-        Globals.vemeRootNavController?.isNavigationBarHidden = isHidden
-    }
-}
-
 extension UIViewController{
     
     ///Adds Child View Controller to Parent View Controller
@@ -27,7 +20,7 @@ extension UIViewController{
         
         self.addChildViewController(childViewController)
         let frame = self.view.bounds
-//        frame.size.height -= UIDevice.bottomPaddingFromSafeArea
+        //        frame.size.height -= UIDevice.bottomPaddingFromSafeArea
         childViewController.view.frame = frame
         self.view.addSubview(childViewController.view)
         
@@ -108,10 +101,10 @@ extension UIViewController{
         
         var navigationVC:UINavigationController?
         if let navVC = self as? UINavigationController{
-           navigationVC = navVC
+            navigationVC = navVC
         }
         else{
-           navigationVC = self.navigationController
+            navigationVC = self.navigationController
         }
         
         if let navVc = navigationVC, navVc.viewControllers.count > index{
@@ -170,7 +163,7 @@ extension UIViewController{
             let image_picker = UIImagePickerController()
             image_picker.delegate = delegate
             let sourceType: UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.camera
-
+            
             if UIImagePickerController.isSourceTypeAvailable(sourceType) {
                 image_picker.sourceType = sourceType
                 if image_picker.sourceType == UIImagePickerControllerSourceType.camera {
@@ -315,6 +308,26 @@ extension UIViewController{
         }
         alertController.addAction(doneAction)
         self.present(alertController, animated: true, completion: nil);
+    }
+    
+    func showActionSheet(title: String, btnTitleArray: [String], completion: @escaping (_ btnTag: Int) -> ()) {
+        let alert = UIAlertController.init(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        for titleString in btnTitleArray {
+            
+            let alertAction = UIAlertAction.init(title: titleString, style: .default, handler: { (action) in
+                
+                for i in 0..<btnTitleArray.count {
+                    
+                    if titleString == btnTitleArray[i] {
+                        completion(i)
+                    }
+                }
+            })
+            
+            alert.addAction(alertAction)
+        }
+        self.present(alert, animated: true, completion: nil)
     }
 }
 
